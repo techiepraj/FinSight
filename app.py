@@ -1,17 +1,23 @@
-import os
-from dotenv import load_dotenv
 from flask import Flask
-
-load_dotenv()  # reads the .env file into environment variables
-
-app = Flask(__name__)
-app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
+from config import Config
+from extensions import db
 
 
-@app.route("/")
-def home():
-    return "FinSight is running!"
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(Config)
+    db.init_app(app)
 
+    import models  # noqa: F401  (this registers the tables)
+
+    @app.route("/")
+    def home():
+        return "FinSight is running!"
+
+    return app
+
+
+app = create_app()
 
 if __name__ == "__main__":
     app.run(debug=True)
