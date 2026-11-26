@@ -1,0 +1,20 @@
+{% extends "base.html" %} {% block title %}Dashboard{% endblock %} {% block
+content %}
+<h1 class="page-title">Hello, {{ current_user.name }} 👋</h1>
+<p class="muted">
+  Authentication is working. Real numbers arrive in the next phases.
+</p>
+
+<section class="cards">
+  <div class="card accent">
+    <span class="label">Total Income</span><strong>₹0</strong>
+  </div>
+  <div class="card">
+    <span class="label">Total Expenses</span><strong>₹0</strong>
+  </div>
+  <div class="card"><span class="label">Balance</span><strong>₹0</strong></div>
+  <div class="card">
+    <span class="label">Savings Rate</span><strong>—</strong>
+  </div>
+</section>
+{% endblock %}

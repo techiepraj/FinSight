@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}FinSight{% endblock %} · FinSight</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body>
+    {% if current_user.is_authenticated %}
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand"><span class="brand-mark">F</span> FinSight</div>
+        <nav class="nav">
+          <a
+            class="nav-link {% if request.endpoint == 'dashboard.index' %}active{% endif %}"
+            href="{{ url_for('dashboard.index') }}"
+            >Dashboard</a
+          >
+          <span class="nav-link disabled">Transactions <em>soon</em></span>
+          <span class="nav-link disabled">Budgets <em>soon</em></span>
+          <span class="nav-link disabled">Goals <em>soon</em></span>
+          <span class="nav-link disabled">Analytics <em>soon</em></span>
+          <span class="nav-link disabled">Subscriptions <em>soon</em></span>
+          <span class="nav-link disabled">Reports <em>soon</em></span>
+          <span class="nav-link disabled">Settings <em>soon</em></span>
+          {% if current_user.is_admin() %}
+          <span class="nav-link disabled">Admin Panel <em>soon</em></span>
+          {% endif %}
+        </nav>
+      </aside>
+
+      <div class="main">
+        <header class="topbar">
+          <div class="user-chip">
+            <span class="avatar">{{ current_user.name[0]|upper }}</span>
+            <div>
+              <strong>{{ current_user.name }}</strong>
+              <small>{{ current_user.role|capitalize }}</small>
+            </div>
+          </div>
+          <form method="post" action="{{ url_for('auth.logout') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <button class="btn btn-ghost" type="submit">Log out</button>
+          </form>
+        </header>
+
+        <main class="content">
+          {% include "_flash.html" %} {% block content %}{% endblock %}
+        </main>
+      </div>
+    </div>
+
+    {% else %}
+    <main class="auth-wrap">{% block auth %}{% endblock %}</main>
+    {% endif %}
+  </body>
+</html>
